@@ -51,6 +51,15 @@ function playCorrectSound() {
     correctSound.play();
   }
 }
+let wrongSound;
+wrongSound = document.getElementById('wrongSound');
+ 
+function playWrongSound() {
+  if (wrongSound) {
+    wrongSound.currentTime = 0; // Reset the audio to the beginning
+    wrongSound.play();
+  }
+}
 
 
 
@@ -74,6 +83,7 @@ userInput.addEventListener('input', function() {
     const enteredWord = userInput.value.trim().toLowerCase();
     const correctWord = currentWord.textContent.toLowerCase();
     if (enteredWord === correctWord) {
+      
       // If the entered word is correct, remove the word and update the score
       currentWord.remove();
       score++;
@@ -81,8 +91,23 @@ userInput.addEventListener('input', function() {
       userInput.value = '';
       playCorrectSound(); // Play the sound effect
     }
+
   }
 });
+userInput.addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') {
+    const currentWord = document.querySelector('.word');
+    if (currentWord) {
+      const enteredWord = userInput.value.trim().toLowerCase();
+      const correctWord = currentWord.textContent.toLowerCase();
+      if (enteredWord !== correctWord) {
+        playWrongSound(); // Play the wrong sound effect
+        userInput.value = ''; // Clear the input only for wrong words
+      }
+    }
+  }
+});
+
 
 // Additional event listener to clear input when the user misses the word
 userInput.addEventListener('change', function() {
